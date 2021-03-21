@@ -3,25 +3,18 @@
 
 //	Definicao da Estrutura de Dados AVL
 
-typedef struct {
-	int value;
-} Info;
 typedef struct avl {
 	struct avl *left;
 	int balance;
-	Info *inf;
+	void *inf;
 	struct avl *right;
 } AVL;
 typedef AVL Node;
 
+typedef int FuncDoisParam (void *x, void *y);
+
 //	Definicao das assinaturas das funcoes
 
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// 	createItem: Funcao que aloca memoria para um tipo Info, inicializando seus campos
-//		Entrada: Inteiro
-//		Saida: Ponteiro para tipo Info
-Info *createInfo (int val);
-//
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	createAVL: Funcao que cria uma AVL
 //		Entrada: Void
@@ -32,7 +25,7 @@ AVL *createAVL ();
 //	createNodeAVL: Funcao que cria um no de AVL, inicializando seus campos
 //		Entrada: Ponteiro para Info
 //		Saida: Ponteiro para Node/AVL
-Node *createNodeAVL (Info *inf);
+Node *createNodeAVL (void *inf);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	leftAVL: Funcao que retorna um ponteiro para a subarvore esquerda
@@ -50,7 +43,7 @@ AVL *rightAVL (AVL *avl);
 //	rootAVL: Funcao que retorna um ponteiro para o elemento de informacao da raiz/no de uma AVL
 //		Entrada: Ponteiro para AVL
 //		Saida: Ponteiro para Info
-Info *rootAVL (AVL *avl);
+void *rootAVL (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	isEmptyAVL: Funcao que verifica se e uma arvore vazia
@@ -62,7 +55,7 @@ int isEmptyAVL (AVL *avl);
 //	searchAVL: Funcao que procura um elemento de informacao na AVL
 //		Entrada: Ponteiro para AVL e ponteiro para Info
 //		Saida: Ponteiro para AVL (elemento procurado ou NULL quando nao existir)
-AVL *searchAVL (AVL *avl, Info *inf);
+AVL *searchAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	destroyAVL: Funcao que libera memoria alocada para a AVL
@@ -130,7 +123,7 @@ AVL *balanceio (AVL *avl);
 //	insertAVL: Funcao que insere um novo elemento na AVL
 //		Entrada: Ponteiro para AVL e ponteiro para elemento de informacao
 //		Saida: Ponteiro para AVL
-AVL *insertAVL (AVL *avl, Info *inf);
+AVL *insertAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	largestElementAVL: Funcao que retorna o ponteiro para o maior elemento da AVL
@@ -154,7 +147,7 @@ AVL *mirrorAVL (AVL *avl);
 //	deleteAVL: Funcao que deleta um elemento da arvore, mantendo sua estrutura
 //		Entrada: Ponteiro para AVL e ponteiro para elemento de informacao
 //		Saida: Ponteiro para arvore AVL modificada;
-AVL *deleteAVL (AVL *avl, Info *inf);
+AVL *deleteAVL (AVL *avl, void *inf);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	printAVL: Funcao que imprime os elementos da AVL em profundidade

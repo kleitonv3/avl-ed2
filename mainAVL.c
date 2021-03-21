@@ -2,6 +2,23 @@
 #include <stdlib.h>
 #include "AVL.c"
 
+typedef struct {
+	int value;
+    int placeholder1;
+    int placeholder2;
+} Info;
+
+// Assinatura das funções do cliente
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// 	createItem: Funcao que aloca memoria para um tipo Info, inicializando seus campos
+//		Entrada: Inteiro
+//		Saida: Ponteiro para tipo Info
+Info *createInfo (int val, int place1, int place2);
+//
+
+int PrimeiroMaiorQueSegundo(void *elem1, void *elem2);
+
 void menu () 
 {
 	printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
@@ -26,7 +43,7 @@ int main ()
 {
 	AVL *avl = createAVL();
 	Info *inf;
-	int op, num;
+	int op, num, pl1, pl2;
 
 	do
 	{
@@ -42,54 +59,64 @@ int main ()
 				exit(0);
 
 			case 1:
+				/*
 				if (isOrderedAVL(avl) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
+				*/
 				printf("Elemento a ser adicionado: ");
-				scanf("%d", &num);
-				inf = createInfo(num);
-				avl = insertAVL(avl, inf);
+				scanf("%d %d %d", &num, &pl1, &pl2);
+				inf = createInfo(num, pl1, pl2);
+				avl = insertAVL(avl, inf, PrimeiroMaiorQueSegundo);
 				printf("Elemento adicionado!\n\n");
 				break;
 
 			case 2:
+				/*
 				if (isOrderedAVL(avl) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
 				printf("Elemento a ser deletado: ");
 				scanf("%d", &num);
 				inf = createInfo(num);
-				if (searchAVL(avl, inf) == NULL) {
+				if (searchAVL(avl, inf, PrimeiroMaiorQueSegundo) == NULL) {
 					printf("Elemento nao existe na arvore!\n\n");
 					free(inf);
 					break;
 				}
 				avl = deleteAVL(avl, inf);
 				printf("Elemento deletado!\n\n");
+				*/
 				break;
 
 			case 3:
+				/*
 				printf("Arvore em profundidade: ");
 				printAVL(avl);
 				printf("\n");
+				*/
 				break;
 
 			case 4:
+				/*
 				if (isEmptyAVL(avl) == 1) {
 					printf("A lista eh vazia!\n\n");
 				} else {
 					printf("A lista NAO eh vazia!\n\n");
 				}
+				*/
 				break;
 
 			case 5:
+				/*
 				if (isOrderedAVL(avl) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
+				*/
 				printf("Elemento a ser procurado: ");
-				scanf("%d", &num);
-				inf = createInfo(num);
-				if (searchAVL(avl, inf) == NULL) {
+				scanf("%d %d %d", &num, &pl1, &pl2);
+				inf = createInfo(num, pl1, pl2);
+				if (searchAVL(avl, inf, PrimeiroMaiorQueSegundo) == NULL) {
 					printf("Elemento '%d' NAO encontrado!\n\n", num);
 				} else {
 					printf("Elemento '%d' encontrado!\n\n", num);
@@ -106,6 +133,7 @@ int main ()
 				break;
 
 			case 8:
+				/*
 				if (isOrderedAVL(avl) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
@@ -115,9 +143,11 @@ int main ()
 				} else {
 					printf("Maior elemento: '%d'\n\n", inf->value);
 				}
+				*/
 				break;
 
 			case 9:
+				/*
 				if (isOrderedAVL(avl) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
@@ -127,6 +157,7 @@ int main ()
 				} else {
 					printf("Menor elemento: '%d'\n\n", inf->value);
 				}
+				*/
 				break;
 
 			case 10:
@@ -143,11 +174,13 @@ int main ()
 				break;
 
 			case 13:
+				/*
 				if (isOrderedAVL(avl) == 1) {
 					printf("A arvore ESTA ordenada!\n\n");
 				} else {
 					printf("A arvore NAO ESTA ordenada!\n\n");
 				}
+				*/
 				break;
 
 			default:
@@ -157,4 +190,31 @@ int main ()
 	} while(1);
 	
 	return 0;
+}
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// 	createItem: Função que aloca memória para um tipo Info, inicializando seus campos
+//		Entrada: Inteiro
+//		Saída: Ponteiro para tipo Info
+Info *createInfo (int val, int place1, int place2)
+{
+	Info *inf = (Info *)malloc(sizeof(Info));
+
+	if (inf) {
+		inf->value = val;
+        inf->placeholder1 = place1;
+        inf->placeholder2 = place2;
+	} else {
+		printf("{ERRO 852}: Memória não alocada para elemento de informação!\n");
+	}
+
+	return inf;
+}
+//
+int PrimeiroMaiorQueSegundo(void *elem1, void *elem2) {
+    if (((Info *)elem1)->value > ((Info *)elem2)->value) {
+        return 1;
+    } else {
+        return 0;
+    }
 }

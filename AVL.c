@@ -5,23 +5,6 @@
 // 	Implementação das Funções de AVL
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// 	createItem: Função que aloca memória para um tipo Info, inicializando seus campos
-//		Entrada: Inteiro
-//		Saída: Ponteiro para tipo Info
-Info *createInfo (int val)
-{
-	Info *inf = (Info *)malloc(sizeof(Info));
-
-	if (inf) {
-		inf->value = val;
-	} else {
-		printf("{ERRO 852}: Memória não alocada para elemento de informação!\n");
-	}
-
-	return inf;
-}
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	createAVL: Função que cria uma AVL
 //		Entrada: Void
 //		Saída: Ponteiro para AVL
@@ -34,7 +17,7 @@ AVL *createAVL ()
 //	createNodeAVL: Função que cria um no de AVL, inicializando seus campos
 //		Entrada: Ponteiro para Info
 //		Saída: Ponteiro para Node/AVL
-Node *createNodeAVL (Info *inf)
+Node *createNodeAVL (void *inf)
 {
 	Node *no = (Node *)malloc(sizeof(Node));
 
@@ -84,7 +67,7 @@ AVL *rightAVL (AVL *avl)
 //	rootAVL: Função que retorna um ponteiro para o elemento de informação da raíz/no de uma AVL
 //		Entrada: Ponteiro para AVL
 //		Saída: Ponteiro para Info
-Info *rootAVL (AVL *avl)
+void *rootAVL (AVL *avl)
 {
 	if (!avl) {
 		return NULL;
@@ -107,19 +90,19 @@ int isEmptyAVL (AVL *avl)
 //	searchAVL: Função que procura um elemento de informação na AVL
 //		Entrada: Ponteiro para AVL e ponteiro para Info
 //		Saída: Ponteiro para AVL (elemento procurado ou NULL quando não existir)
-AVL *searchAVL (AVL *avl, Info *inf)
+AVL *searchAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 {
 	if (isEmptyAVL(avl) || !inf) return NULL;
-	if (rootAVL(avl)->value == inf->value) {
-		// Encontrei
-		return avl;
-	} else if (rootAVL(avl)->value > inf->value) {
-		// Elemento menor que a raiz atual
-		return searchAVL(leftAVL(avl), inf);
-	} else {
-		// Elemento maior que a raiz atual
-		return searchAVL(rightAVL(avl), inf);
-	}
+	if ((*MaiorQue) (avl->inf, inf)) {
+        // Elemento menor que a raiz atual
+        return searchAVL(leftAVL(avl), inf, MaiorQue);
+    } else if ((*MaiorQue) (inf, avl->inf)) {
+        // Elemento maior que a raiz atual
+        return searchAVL(rightAVL(avl), inf, MaiorQue);
+    } else {
+        // Encontrei!
+        return avl;
+    }
 }
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -267,7 +250,7 @@ AVL *balanceio (AVL *avl)
 //	insertAVL: Função que insere um novo elemento na AVL
 //		Entrada: Ponteiro para AVL e ponteiro para elemento de informação
 //		Saída: Ponteiro para AVL
-AVL *insertAVL (AVL *avl, Info *inf)
+AVL *insertAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 {
 	// Poderia ser implementada em duas partes nas quais uma ia verificar se o elemento já esta na arvore
 	// e a outro devidamente iria inserir o elemento.
@@ -277,10 +260,10 @@ AVL *insertAVL (AVL *avl, Info *inf)
 		if (!ptr) return avl;
 		else return ptr;
 	}
-	if (inf->value < avl->inf->value){
-		avl->left = insertAVL(leftAVL(avl), inf);
+	if ((*MaiorQue) (avl->inf, inf)){
+		avl->left = insertAVL(leftAVL(avl), inf, MaiorQue);
 	} else {
-		avl->right = insertAVL(rightAVL(avl), inf);
+		avl->right = insertAVL(rightAVL(avl), inf, MaiorQue);
 	}
 	atualizaBalance(avl);
 
@@ -338,7 +321,8 @@ AVL *mirrorAVL (AVL *avl)
 //	deleteAVL: Função que deleta um elemento da árvore, mantendo sua estrutura
 //		Entrada: Ponteiro para AVL e ponteiro para elemento de informação
 //		Saída: Ponteiro para árvore AVL modificada;
-AVL *deleteAVL (AVL *avl, Info *inf)
+/*
+AVL *deleteAVL (AVL *avl, void *inf)
 {
 	if (!inf || avl == NULL) {
 		return avl;
@@ -370,11 +354,13 @@ AVL *deleteAVL (AVL *avl, Info *inf)
 
 	return balanceio(avl);
 }
+*/
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	printAVL: Função que imprime os elementos da AVL por níveis
 //		Entrada: Ponteiro para AVL
 //		Saída: Void
+/*
 void printAVL (AVL *avl)
 {
 	if (isEmptyAVL(avl)) return;
@@ -387,11 +373,13 @@ void printAVL (AVL *avl)
 	auxPrintAVL(rightAVL(avl));
 	printf("\n");
 }
+*/
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	auxPrintAVL: Função que auxilia a imprissão dos elementos da AVL em profundidade
 //		Entrada: Ponteiro para AVL
 //		Saída: Void
+/*
 void auxPrintAVL (AVL *avl)
 {
 	if (isEmptyAVL(avl)) return;
@@ -401,6 +389,7 @@ void auxPrintAVL (AVL *avl)
 	auxPrintAVL(rightAVL(avl));
 	return;
 }
+*/
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	weightAVL: Função que calcula o peso da árvore (número de nós)
@@ -441,6 +430,7 @@ int totalInternalNodes (AVL *avl)
 //	isOrderedAVL: Função que verifica se uma AVL está ordenada
 //		Entrada: Ponteiro para AVL
 //		Saída: Inteiro (1 = Ordenada, 0 = Não ordenada)
+/*
 int isOrderedAVL (AVL *avl)
 {
 	if (isEmptyAVL(avl)) return 1;
@@ -449,4 +439,5 @@ int isOrderedAVL (AVL *avl)
 	if (!isEmptyAVL(rightAVL(avl)) && (rootAVL(avl)->value > rootAVL(rightAVL(avl))->value)) return 0;
 	return (isOrderedAVL(leftAVL(avl)) && isOrderedAVL(rightAVL(avl)));
 }
+*/
 //
