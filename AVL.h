@@ -147,7 +147,7 @@ AVL *mirrorAVL (AVL *avl);
 //	deleteAVL: Funcao que deleta um elemento da arvore, mantendo sua estrutura
 //		Entrada: Ponteiro para AVL e ponteiro para elemento de informacao
 //		Saida: Ponteiro para arvore AVL modificada;
-AVL *deleteAVL (AVL *avl, void *inf);
+AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	printAVL: Funcao que imprime os elementos da AVL em profundidade
@@ -183,7 +183,7 @@ int totalInternalNodes (AVL *avl);
 //	isOrderedAVL: Funcao que verifica se uma AVL esta ordenada
 //		Entrada: Ponteiro para AVL
 //		Saida: Inteiro (1 = Ordenada, 0 = Nao ordenada)
-int isOrderedAVL (AVL *avl);
+int isOrderedAVL (AVL *avl, FuncDoisParam *MaiorQue);
 //
 
 #endif // __AVL_H__

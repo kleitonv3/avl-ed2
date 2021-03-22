@@ -321,40 +321,38 @@ AVL *mirrorAVL (AVL *avl)
 //	deleteAVL: Função que deleta um elemento da árvore, mantendo sua estrutura
 //		Entrada: Ponteiro para AVL e ponteiro para elemento de informação
 //		Saída: Ponteiro para árvore AVL modificada;
-/*
-AVL *deleteAVL (AVL *avl, void *inf)
+AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 {
 	if (!inf || avl == NULL) {
 		return avl;
-	} else if (inf->value < rootAVL(avl)->value) {
+	} else if ((*MaiorQue) (avl->inf, inf)) {
 		// Avança pela esquerda
-		avl->left = deleteAVL(leftAVL(avl), inf);
-	} else if (inf->value > rootAVL(avl)->value) {
+		avl->left = deleteAVL(leftAVL(avl), inf, MaiorQue);
+	} else if ((*MaiorQue) (inf, avl->inf)) {
 		// Avança pela direita
-		avl->right = deleteAVL(rightAVL(avl), inf);
+		avl->right = deleteAVL(rightAVL(avl), inf, MaiorQue);
 	} else {
 		if (leftAVL(avl) == NULL) {
 			AVL *temp = avl->right;
-			//free(avl->inf);
+			free(avl->inf);
 			free(avl);
 			return temp;
 		} else if (rightAVL(avl) == NULL) {
 			AVL *temp = avl->left;
-			//free(avl->inf);
+			free(avl->inf);
 			free(avl);
 			return temp;
 		}
 
 		AVL *temp = largestElementAVL(leftAVL(avl));
 		avl->inf = temp->inf;
-		avl->left = deleteAVL(avl->left, temp->inf);
+		avl->left = deleteAVL(avl->left, temp->inf, MaiorQue);
 	}
 
 	atualizaBalance(avl);
 
 	return balanceio(avl);
 }
-*/
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	printAVL: Função que imprime os elementos da AVL por níveis
@@ -430,14 +428,12 @@ int totalInternalNodes (AVL *avl)
 //	isOrderedAVL: Função que verifica se uma AVL está ordenada
 //		Entrada: Ponteiro para AVL
 //		Saída: Inteiro (1 = Ordenada, 0 = Não ordenada)
-/*
-int isOrderedAVL (AVL *avl)
+int isOrderedAVL (AVL *avl, FuncDoisParam *MaiorQue)
 {
 	if (isEmptyAVL(avl)) return 1;
 	// A raíz deveria ser maior que a esquerda e menor que a direita
-	if (!isEmptyAVL(leftAVL(avl)) && (rootAVL(avl)->value < rootAVL(leftAVL(avl))->value)) return 0;
-	if (!isEmptyAVL(rightAVL(avl)) && (rootAVL(avl)->value > rootAVL(rightAVL(avl))->value)) return 0;
-	return (isOrderedAVL(leftAVL(avl)) && isOrderedAVL(rightAVL(avl)));
+	if (!isEmptyAVL(leftAVL(avl)) && ((*MaiorQue) (leftAVL(avl)->inf, avl->inf))) return 0;
+	if (!isEmptyAVL(rightAVL(avl)) && ((*MaiorQue) (avl->inf, rightAVL(avl)->inf))) return 0;
+	return (isOrderedAVL(leftAVL(avl), MaiorQue) && isOrderedAVL(rightAVL(avl), MaiorQue));
 }
-*/
 //
