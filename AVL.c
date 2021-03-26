@@ -334,16 +334,15 @@ AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 	} else {
 		if (leftAVL(avl) == NULL) {
 			AVL *temp = avl->right;
-			free(avl->inf);
 			free(avl);
 			return temp;
 		} else if (rightAVL(avl) == NULL) {
 			AVL *temp = avl->left;
-			free(avl->inf);
 			free(avl);
 			return temp;
 		}
 
+		free(avl->inf);
 		AVL *temp = largestElementAVL(leftAVL(avl));
 		avl->inf = temp->inf;
 		avl->left = deleteAVL(avl->left, temp->inf, MaiorQue);
