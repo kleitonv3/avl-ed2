@@ -94,13 +94,11 @@ int main ()
 				break;
 
 			case 4:
-				/*
 				if (isEmptyAVL(avl) == 1) {
-					printf("A lista eh vazia!\n\n");
+					printf("A arvore eh vazia!\n\n");
 				} else {
-					printf("A lista NAO eh vazia!\n\n");
+					printf("A arvore NAO eh vazia!\n\n");
 				}
-				*/
 				break;
 
 			case 5:
@@ -127,31 +125,27 @@ int main ()
 				break;
 
 			case 8:
-				/*
-				if (isOrderedAVL(avl) == 0) {
+				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
-				inf = rootAVL(largestElementAVL(avl));
+				inf = (largestElementAVL(avl))->inf;
 				if (inf == NULL) {
 					printf("Nao existem elementos na arvore!\n\n");
 				} else {
 					printf("Maior elemento: '%d'\n\n", inf->value);
 				}
-				*/
 				break;
 
 			case 9:
-				/*
-				if (isOrderedAVL(avl) == 0) {
+				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
-				inf = rootAVL(smallestElementAVL(avl));
+				inf = (smallestElementAVL(avl))->inf;
 				if (inf == NULL) {
 					printf("Nao existem elementos na arvore!\n\n");
 				} else {
 					printf("Menor elemento: '%d'\n\n", inf->value);
 				}
-				*/
 				break;
 
 			case 10:
