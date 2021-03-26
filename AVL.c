@@ -358,36 +358,21 @@ AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 //	printAVL: Função que imprime os elementos da AVL por níveis
 //		Entrada: Ponteiro para AVL
 //		Saída: Void
-/*
-void printAVL (AVL *avl)
+void printAVL (AVL *avl, int level, FuncUmParam *ImprimeVal)
 {
-	if (isEmptyAVL(avl)) return;
+	int i;
 
-	// Visita a raíz
-	printf("%d ", rootAVL(avl)->value);
-	// Visita a esquerda
-	auxPrintAVL(leftAVL(avl));
-	// Visita a direita
-	auxPrintAVL(rightAVL(avl));
-	printf("\n");
-}
-*/
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	auxPrintAVL: Função que auxilia a imprissão dos elementos da AVL em profundidade
-//		Entrada: Ponteiro para AVL
-//		Saída: Void
-/*
-void auxPrintAVL (AVL *avl)
-{
-	if (isEmptyAVL(avl)) return;
+	if (avl != NULL) {
+		printAVL(rightAVL(avl), level+1, ImprimeVal);
 
-	printf("%d ", rootAVL(avl)->value);
-	auxPrintAVL(leftAVL(avl));
-	auxPrintAVL(rightAVL(avl));
-	return;
+		for(i=0; i<level; i++)
+			printf("\t");
+
+		(*ImprimeVal) (avl->inf);
+
+		printAVL(leftAVL(avl), level+1, ImprimeVal);
+	}
 }
-*/
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	weightAVL: Função que calcula o peso da árvore (número de nós)

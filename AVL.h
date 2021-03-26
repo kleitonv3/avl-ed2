@@ -13,6 +13,8 @@ typedef AVL Node;
 
 typedef int FuncDoisParam (void *x, void *y);
 
+typedef void FuncUmParam (void *x);
+
 //	Definicao das assinaturas das funcoes
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -153,13 +155,7 @@ AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue);
 //	printAVL: Funcao que imprime os elementos da AVL em profundidade
 //		Entrada: Ponteiro para AVL
 //		Saida: Void
-void printAVL (AVL *avl);
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	auxPrintAVL: Funcao que auxilia a imprissao dos elementos da AVL em profundidade
-//		Entrada: Ponteiro para AVL
-//		Saida: Void
-void auxPrintAVL (AVL *avl);
+void printAVL (AVL *avl, int level, FuncUmParam *ImprimeVal);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	weightAVL: Funcao que calcula o peso da arvore (numero de nos)

@@ -19,6 +19,8 @@ Info *createInfo (int val, int place1, int place2);
 
 int PrimeiroMaiorQueSegundo(void *elem1, void *elem2);
 
+void ImprimeValorPrimario(void *elem1);
+
 void menu () 
 {
 	printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
@@ -59,11 +61,9 @@ int main ()
 				exit(0);
 
 			case 1:
-				/*
-				if (isOrderedAVL(avl) == 0) {
+				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
-				*/
 				printf("Elemento a ser adicionado: ");
 				scanf("%d %d %d", &num, &pl1, &pl2);
 				inf = createInfo(num, pl1, pl2);
@@ -72,29 +72,25 @@ int main ()
 				break;
 
 			case 2:
-				/*
-				if (isOrderedAVL(avl) == 0) {
+				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
 				printf("Elemento a ser deletado: ");
-				scanf("%d", &num);
-				inf = createInfo(num);
+				scanf("%d %d %d", &num, &pl1, &pl2);
+				inf = createInfo(num, pl1, pl2);
 				if (searchAVL(avl, inf, PrimeiroMaiorQueSegundo) == NULL) {
 					printf("Elemento nao existe na arvore!\n\n");
 					free(inf);
 					break;
 				}
-				avl = deleteAVL(avl, inf);
+				avl = deleteAVL(avl, inf, PrimeiroMaiorQueSegundo);
 				printf("Elemento deletado!\n\n");
-				*/
 				break;
 
 			case 3:
-				/*
-				printf("Arvore em profundidade: ");
-				printAVL(avl);
+				printf("Arvore em profundidade: \n\n");
+				printAVL(avl, 0, ImprimeValorPrimario);
 				printf("\n");
-				*/
 				break;
 
 			case 4:
@@ -108,11 +104,9 @@ int main ()
 				break;
 
 			case 5:
-				/*
-				if (isOrderedAVL(avl) == 0) {
+				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
-				*/
 				printf("Elemento a ser procurado: ");
 				scanf("%d %d %d", &num, &pl1, &pl2);
 				inf = createInfo(num, pl1, pl2);
@@ -174,13 +168,11 @@ int main ()
 				break;
 
 			case 13:
-				/*
-				if (isOrderedAVL(avl) == 1) {
+				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 1) {
 					printf("A arvore ESTA ordenada!\n\n");
 				} else {
 					printf("A arvore NAO ESTA ordenada!\n\n");
 				}
-				*/
 				break;
 
 			default:
@@ -217,4 +209,10 @@ int PrimeiroMaiorQueSegundo(void *elem1, void *elem2) {
     } else {
         return 0;
     }
+}
+//
+void ImprimeValorPrimario(void *elem1) {
+	if (((Info *)elem1) != NULL) {
+		printf("%d\n", ((Info *)elem1)->value);
+	}
 }
