@@ -15,7 +15,7 @@ AVL *createAVL ()
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	createNodeAVL: Função que cria um no de AVL, inicializando seus campos
-//		Entrada: Ponteiro para Info
+//		Entrada: Ponteiro para Void
 //		Saída: Ponteiro para Node/AVL
 Node *createNodeAVL (void *inf)
 {
@@ -64,19 +64,6 @@ AVL *rightAVL (AVL *avl)
 }
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	rootAVL: Função que retorna um ponteiro para o elemento de informação da raíz/no de uma AVL
-//		Entrada: Ponteiro para AVL
-//		Saída: Ponteiro para Info
-void *rootAVL (AVL *avl)
-{
-	if (!avl) {
-		return NULL;
-	}
-
-	return avl->inf;
-}
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	isEmptyAVL: Função que verifica se é uma árvore vazia
 //		Entrada: Ponteiro para AVL
 //		Saída: Inteiro (1 = Vazia, 0 = NãoVazia)
@@ -88,7 +75,7 @@ int isEmptyAVL (AVL *avl)
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	searchAVL: Função que procura um elemento de informação na AVL
-//		Entrada: Ponteiro para AVL e ponteiro para Info
+//		Entrada: Ponteiro para AVL, ponteiro para Void e Ponteiro para Função de 2 param.
 //		Saída: Ponteiro para AVL (elemento procurado ou NULL quando não existir)
 AVL *searchAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 {
@@ -114,7 +101,7 @@ void destroyAVL (AVL *avl)
 	if (isEmptyAVL(avl)) return;
 	destroyAVL(leftAVL(avl));
 	destroyAVL(rightAVL(avl));
-	free(rootAVL(avl));
+	free(avl->inf);
 	free(avl);
 	return;
 }
@@ -139,7 +126,7 @@ int heightAVL (AVL *avl)
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	rightRotation: Função que devidamente realiza a rotação (a antiga raiz se torna o filho 
-// 	*direito* da nova raiz)
+// 	direito da nova raiz)
 //		Entrada: Ponteiro para AVL
 //		Saída: Ponteiro para AVL
 AVL *rightRotation (AVL *av1)
@@ -148,7 +135,7 @@ AVL *rightRotation (AVL *av1)
 	AVL *av2 = av1->left;
 	av1->left = av2->right;
 	av2->right = av1;
-	// Atualizando fatores de balanço
+	// Atualizando fatores de balanceamento
 	atualizaBalance(av1);
 	atualizaBalance(av2);
 	// av2 é a nova raiz
@@ -157,7 +144,7 @@ AVL *rightRotation (AVL *av1)
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	leftRotation: Função que devidamente realiza a rotação (a antiga raiz se torna o filho 
-// 	*esquerdo* da nova raiz)
+// 	esquerdo da nova raiz)
 //		Entrada: Ponteiro para AVL
 //		Saída: Ponteiro para AVL
 AVL *leftRotation (AVL *av1)
@@ -171,15 +158,6 @@ AVL *leftRotation (AVL *av1)
 	atualizaBalance(av2);
 	// av2 é a nova raiz
 	return av2;
-}
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	leftLeft: Função que realiza a rotação LL
-//		Entrada: Ponteiro para AVL
-//		Saída: Ponteiro para AVL
-AVL *leftLeft (AVL *avl)
-{
-	return rightRotation(avl);
 }
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -203,15 +181,6 @@ AVL *rightLeft (AVL *avl)
 }
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	rightRight: Função que realiza a rotação RR
-//		Entrada: Ponteiro para AVL
-//		Saída: Ponteiro para AVL
-AVL *rightRight (AVL *avl)
-{
-	return leftRotation(avl);
-}
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	atualizaBalance: Função que atualiza o fator de balanço de um nó
 //		Entrada: Ponteiro para AVL
 //		Saída: Void
@@ -229,14 +198,14 @@ AVL *balanceio (AVL *avl)
 	if (avl->balance == 2) {
 		// Arvore pesada para a esquerda
 		if (leftAVL(avl)->balance >= 0) {
-			return leftLeft(avl);
+			return rightRotation(avl);
 		} else {
 			return leftRight(avl);
 		}
 	} else if (avl->balance == -2) {
 		// Arvore pesada para a direita
 		if (rightAVL(avl)->balance <= 0) {
-			return rightRight(avl);
+			return leftRotation(avl);
 		} else {
 			return rightLeft(avl);
 		}
@@ -248,12 +217,11 @@ AVL *balanceio (AVL *avl)
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	insertAVL: Função que insere um novo elemento na AVL
-//		Entrada: Ponteiro para AVL e ponteiro para elemento de informação
+//		Entrada: Ponteiro para AVL, ponteiro para void e ponteiro para Funcao de 2 Param
 //		Saída: Ponteiro para AVL
 AVL *insertAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 {
-	// Poderia ser implementada em duas partes nas quais uma ia verificar se o elemento já esta na arvore
-	// e a outro devidamente iria inserir o elemento.
+	// A verificacao se o elemento ja existe eh feita na main
 	if (!inf) return avl;
 	if (avl == NULL) {
 		AVL *ptr = createNodeAVL(inf);
@@ -319,10 +287,11 @@ AVL *mirrorAVL (AVL *avl)
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	deleteAVL: Função que deleta um elemento da árvore, mantendo sua estrutura
-//		Entrada: Ponteiro para AVL e ponteiro para elemento de informação
-//		Saída: Ponteiro para árvore AVL modificada;
+//		Entrada: Ponteiro para AVL, ponteiro para void e ponteiro para Funcao de 2 Param
+//		Saída: Ponteiro para AVL
 AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 {
+	// A verificacao se o elemento ja existe eh feita na main
 	if (!inf || avl == NULL) {
 		return avl;
 	} else if ((*MaiorQue) (avl->inf, inf)) {
@@ -355,7 +324,7 @@ AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue)
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	printAVL: Função que imprime os elementos da AVL por níveis
-//		Entrada: Ponteiro para AVL
+//		Entrada: Ponteiro para AVL, inteiro, e Funcao de 1 Param 
 //		Saída: Void
 void printAVL (AVL *avl, int level, FuncUmParam *ImprimeVal)
 {
@@ -410,7 +379,7 @@ int totalInternalNodes (AVL *avl)
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	isOrderedAVL: Função que verifica se uma AVL está ordenada
-//		Entrada: Ponteiro para AVL
+//		Entrada: Ponteiro para AVL e ponteiro para Funcao de 2 Param
 //		Saída: Inteiro (1 = Ordenada, 0 = Não ordenada)
 int isOrderedAVL (AVL *avl, FuncDoisParam *MaiorQue)
 {

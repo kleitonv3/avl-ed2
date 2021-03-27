@@ -3,23 +3,33 @@
 #include "AVL.c"
 
 typedef struct {
-	int value;
-    int placeholder1;
-    int placeholder2;
+	int id;
+    int idade;
+	float nota;
 } Info;
 
 // Assinatura das funções do cliente
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// 	createItem: Funcao que aloca memoria para um tipo Info, inicializando seus campos
-//		Entrada: Inteiro
+// 	createInfo: Funcao que aloca memoria para um tipo Info, inicializando seus campos
+//		Entrada: Inteiro, int e float
 //		Saida: Ponteiro para tipo Info
-Info *createInfo (int val, int place1, int place2);
+Info *createInfo (int val, int place1, float place2);
 //
-
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// 	PrimeiroMaiorQueSegundo: Funcao que analisa se o elemento do primeiro parâmetro
+//  eh maior que o elemento do segundo parâmetro
+//		Entrada: Ponteiro para void
+//		Saída: Inteiro (1=True, 0=False)
 int PrimeiroMaiorQueSegundo(void *elem1, void *elem2);
-
+//
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// 	ImprimeValorPrimario: Funcao que imprime o valor primário
+//  do elemento de informacao recebido
+//		Entrada: Ponteiro para void
+//		Saída: Void
 void ImprimeValorPrimario(void *elem1);
+//
 
 void menu () 
 {
@@ -45,7 +55,8 @@ int main ()
 {
 	AVL *avl = createAVL();
 	Info *inf;
-	int op, num, pl1, pl2;
+	int op, id, idade;
+	float nota;
 
 	do
 	{
@@ -64,9 +75,14 @@ int main ()
 				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
-				printf("Elemento a ser adicionado: ");
-				scanf("%d %d %d", &num, &pl1, &pl2);
-				inf = createInfo(num, pl1, pl2);
+				printf("Elemento a ser adicionado (todos os campos): ");
+				scanf("%d %c %d", &id, &idade, &nota);
+				inf = createInfo(id, idade, nota);
+				if (searchAVL(avl, inf, PrimeiroMaiorQueSegundo) != NULL) {
+					printf("Elemento ja existe na arvore!\n\n");
+					free(inf);
+					break;
+				}
 				avl = insertAVL(avl, inf, PrimeiroMaiorQueSegundo);
 				printf("Elemento adicionado!\n\n");
 				break;
@@ -75,9 +91,9 @@ int main ()
 				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
-				printf("Elemento a ser deletado: ");
-				scanf("%d %d %d", &num, &pl1, &pl2);
-				inf = createInfo(num, pl1, pl2);
+				printf("Elemento a ser deletado (chave primaria): ");
+				scanf("%d", &id);
+				inf = createInfo(id, 0, 0);
 				if (searchAVL(avl, inf, PrimeiroMaiorQueSegundo) == NULL) {
 					printf("Elemento nao existe na arvore!\n\n");
 					free(inf);
@@ -105,13 +121,13 @@ int main ()
 				if (isOrderedAVL(avl, PrimeiroMaiorQueSegundo) == 0) {
 					printf("Arvore NAO ESTA ordenada, o proposito da funcao pode estar comprometido!\n\n");
 				}
-				printf("Elemento a ser procurado: ");
-				scanf("%d %d %d", &num, &pl1, &pl2);
-				inf = createInfo(num, pl1, pl2);
+				printf("Elemento a ser procurado (chave primaria): ");
+				scanf("%d", &id);
+				inf = createInfo(id, 0, 0);
 				if (searchAVL(avl, inf, PrimeiroMaiorQueSegundo) == NULL) {
-					printf("Elemento '%d' NAO encontrado!\n\n", num);
+					printf("Elemento '%d' NAO encontrado!\n\n", id);
 				} else {
-					printf("Elemento '%d' encontrado!\n\n", num);
+					printf("Elemento '%d' encontrado!\n\n", id);
 				}
 				free(inf);
 				break;
@@ -132,7 +148,7 @@ int main ()
 				if (inf == NULL) {
 					printf("Nao existem elementos na arvore!\n\n");
 				} else {
-					printf("Maior elemento: '%d'\n\n", inf->value);
+					printf("Maior elemento: '%d'\n\n", inf->id);
 				}
 				break;
 
@@ -144,7 +160,7 @@ int main ()
 				if (inf == NULL) {
 					printf("Nao existem elementos na arvore!\n\n");
 				} else {
-					printf("Menor elemento: '%d'\n\n", inf->value);
+					printf("Menor elemento: '%d'\n\n", inf->id);
 				}
 				break;
 
@@ -179,17 +195,17 @@ int main ()
 }
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// 	createItem: Função que aloca memória para um tipo Info, inicializando seus campos
+// 	createInfo: Função que aloca memória para um tipo Info, inicializando seus campos
 //		Entrada: Inteiro
 //		Saída: Ponteiro para tipo Info
-Info *createInfo (int val, int place1, int place2)
+Info *createInfo (int val, int place1, float place2)
 {
 	Info *inf = (Info *)malloc(sizeof(Info));
 
 	if (inf) {
-		inf->value = val;
-        inf->placeholder1 = place1;
-        inf->placeholder2 = place2;
+		inf->id = val;
+        inf->idade = place1;
+        inf->nota = place2;
 	} else {
 		printf("{ERRO 852}: Memória não alocada para elemento de informação!\n");
 	}
@@ -197,16 +213,26 @@ Info *createInfo (int val, int place1, int place2)
 	return inf;
 }
 //
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// 	PrimeiroMaiorQueSegundo: Função que analisa se o elemento do primeiro parâmetro
+//  eh maior que o elemento do segundo parâmetro
+//		Entrada: Ponteiro para void
+//		Saída: Inteiro (1=True, 0=False)
 int PrimeiroMaiorQueSegundo(void *elem1, void *elem2) {
-    if (((Info *)elem1)->value > ((Info *)elem2)->value) {
+    if (((Info *)elem1)->id > ((Info *)elem2)->id) {
         return 1;
     } else {
         return 0;
     }
 }
 //
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// 	ImprimeValorPrimario: Função que imprime o valor primário
+//  do elemento de informação recebido
+//		Entrada: Ponteiro para void
+//		Saída: Void
 void ImprimeValorPrimario(void *elem1) {
 	if (((Info *)elem1) != NULL) {
-		printf("%d\n", ((Info *)elem1)->value);
+		printf("%d\n", ((Info *)elem1)->id);
 	}
 }

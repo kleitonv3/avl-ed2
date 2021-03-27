@@ -24,9 +24,9 @@ typedef void FuncUmParam (void *x);
 AVL *createAVL ();
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	createNodeAVL: Funcao que cria um no de AVL, inicializando seus campos
-//		Entrada: Ponteiro para Info
-//		Saida: Ponteiro para Node/AVL
+//	createNodeAVL: Função que cria um no de AVL, inicializando seus campos
+//		Entrada: Ponteiro para Void
+//		Saída: Ponteiro para Node/AVL
 Node *createNodeAVL (void *inf);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -42,21 +42,15 @@ AVL *leftAVL (AVL *avl);
 AVL *rightAVL (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	rootAVL: Funcao que retorna um ponteiro para o elemento de informacao da raiz/no de uma AVL
-//		Entrada: Ponteiro para AVL
-//		Saida: Ponteiro para Info
-void *rootAVL (AVL *avl);
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	isEmptyAVL: Funcao que verifica se e uma arvore vazia
 //		Entrada: Ponteiro para AVL
 //		Saida: Inteiro (1 = Vazia, 0 = NaoVazia)
 int isEmptyAVL (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	searchAVL: Funcao que procura um elemento de informacao na AVL
-//		Entrada: Ponteiro para AVL e ponteiro para Info
-//		Saida: Ponteiro para AVL (elemento procurado ou NULL quando nao existir)
+//	searchAVL: Função que procura um elemento de informação na AVL
+//		Entrada: Ponteiro para AVL, ponteiro para Void e Ponteiro para Função de 2 param.
+//		Saída: Ponteiro para AVL (elemento procurado ou NULL quando não existir)
 AVL *searchAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -72,24 +66,18 @@ void destroyAVL (AVL *avl);
 int heightAVL (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	rightRotation: Funcao que devidamente realiza a rotacao (a antiga raiz se torna o filho 
-// 	*direito* da nova raiz)
+//	rightRotation: Função que devidamente realiza a rotação (a antiga raiz se torna o filho 
+// 	direito da nova raiz)
 //		Entrada: Ponteiro para AVL
-//		Saida: Ponteiro para AVL
+//		Saída: Ponteiro para AVL
 AVL *rightRotation (AVL *av1);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	leftRotation: Funcao que devidamente realiza a rotacao (a antiga raiz se torna o filho 
-// 	*esquerdo* da nova raiz)
+//	leftRotation: Função que devidamente realiza a rotação (a antiga raiz se torna o filho 
+// 	esquerdo da nova raiz)
 //		Entrada: Ponteiro para AVL
-//		Saida: Ponteiro para AVL
+//		Saída: Ponteiro para AVL
 AVL *leftRotation (AVL *av1);
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	leftLeft: Funcao que realiza a rotacao LL
-//		Entrada: Ponteiro para AVL
-//		Saida: Ponteiro para AVL
-AVL *leftLeft (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	leftRight: Funcao que realiza a rotacao LR
@@ -104,12 +92,6 @@ AVL *leftRight (AVL *avl);
 AVL *rightLeft (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	rightRight: Funcao que realiza a rotacao RR
-//		Entrada: Ponteiro para AVL
-//		Saida: Ponteiro para AVL
-AVL *rightRight (AVL *avl);
-//
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //	atualizaBalance: Funcao que atualiza o fator de balanco de um no
 //		Entrada: Ponteiro para AVL
 //		Saida: Void
@@ -122,9 +104,9 @@ void *atualizaBalance (AVL *avl);
 AVL *balanceio (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	insertAVL: Funcao que insere um novo elemento na AVL
-//		Entrada: Ponteiro para AVL e ponteiro para elemento de informacao
-//		Saida: Ponteiro para AVL
+//	insertAVL: Função que insere um novo elemento na AVL
+//		Entrada: Ponteiro para AVL, ponteiro para void e ponteiro para Funcao de 2 Param
+//		Saída: Ponteiro para AVL
 AVL *insertAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -146,15 +128,15 @@ AVL *smallestElementAVL (AVL *avl);
 AVL *mirrorAVL (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	deleteAVL: Funcao que deleta um elemento da arvore, mantendo sua estrutura
-//		Entrada: Ponteiro para AVL e ponteiro para elemento de informacao
-//		Saida: Ponteiro para arvore AVL modificada;
+//	deleteAVL: Função que deleta um elemento da árvore, mantendo sua estrutura
+//		Entrada: Ponteiro para AVL, ponteiro para void e ponteiro para Funcao de 2 Param
+//		Saída: Ponteiro para AVL
 AVL *deleteAVL (AVL *avl, void *inf, FuncDoisParam *MaiorQue);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	printAVL: Funcao que imprime os elementos da AVL em profundidade
-//		Entrada: Ponteiro para AVL
-//		Saida: Void
+//	printAVL: Função que imprime os elementos da AVL por níveis
+//		Entrada: Ponteiro para AVL, inteiro, e Funcao de 1 Param 
+//		Saída: Void
 void printAVL (AVL *avl, int level, FuncUmParam *ImprimeVal);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -176,9 +158,9 @@ int totalExternalNodes (AVL *avl);
 int totalInternalNodes (AVL *avl);
 //
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//	isOrderedAVL: Funcao que verifica se uma AVL esta ordenada
-//		Entrada: Ponteiro para AVL
-//		Saida: Inteiro (1 = Ordenada, 0 = Nao ordenada)
+//	isOrderedAVL: Função que verifica se uma AVL está ordenada
+//		Entrada: Ponteiro para AVL e ponteiro para Funcao de 2 Param
+//		Saída: Inteiro (1 = Ordenada, 0 = Não ordenada)
 int isOrderedAVL (AVL *avl, FuncDoisParam *MaiorQue);
 //
 
